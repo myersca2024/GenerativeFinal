@@ -1,0 +1,56 @@
+<set>
+  <tiles>
+<tile name="Assets/Prefabs/Tiles/Tile3" symmetry="X" weight="1.0"/>
+<tile name="Assets/Prefabs/Tiles/Tile6" symmetry="X" weight="1.0"/>
+<tile name="Assets/Prefabs/Tiles/Tile4" symmetry="X" weight="1.0"/>
+<tile name="Assets/Prefabs/Tiles/Tile5" symmetry="X" weight="1.0"/>
+<tile name="Assets/Prefabs/Tiles/Tile1" symmetry="X" weight="1.0"/>
+<tile name="Assets/Prefabs/Tiles/Tile2" symmetry="X" weight="1.0"/>
+	</tiles>
+<neighbors>  <neighbor left="Assets/Prefabs/Tiles/Tile3 0" right="Assets/Prefabs/Tiles/Tile3 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 1" right="Assets/Prefabs/Tiles/Tile3 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 0" right="Assets/Prefabs/Tiles/Tile2 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 1" right="Assets/Prefabs/Tiles/Tile6 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 0" right="Assets/Prefabs/Tiles/Tile2 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 1" right="Assets/Prefabs/Tiles/Tile6 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 0" right="Assets/Prefabs/Tiles/Tile3 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 1" right="Assets/Prefabs/Tiles/Tile2 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 0" right="Assets/Prefabs/Tiles/Tile4 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 1" right="Assets/Prefabs/Tiles/Tile4 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 0" right="Assets/Prefabs/Tiles/Tile4 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 1" right="Assets/Prefabs/Tiles/Tile4 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 0" right="Assets/Prefabs/Tiles/Tile3 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 1" right="Assets/Prefabs/Tiles/Tile3 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 0" right="Assets/Prefabs/Tiles/Tile6 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 0" right="Assets/Prefabs/Tiles/Tile6 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 1" right="Assets/Prefabs/Tiles/Tile6 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 0" right="Assets/Prefabs/Tiles/Tile2 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 0" right="Assets/Prefabs/Tiles/Tile3 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 1" right="Assets/Prefabs/Tiles/Tile2 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 1" right="Assets/Prefabs/Tiles/Tile2 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 0" right="Assets/Prefabs/Tiles/Tile6 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 1" right="Assets/Prefabs/Tiles/Tile3 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile2 1" right="Assets/Prefabs/Tiles/Tile4 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 1" right="Assets/Prefabs/Tiles/Tile4 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 1" right="Assets/Prefabs/Tiles/Tile5 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 1" right="Assets/Prefabs/Tiles/Tile5 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 0" right="Assets/Prefabs/Tiles/Tile6 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 1" right="Assets/Prefabs/Tiles/Tile1 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile6 0" right="Assets/Prefabs/Tiles/Tile5 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile5 0" right="Assets/Prefabs/Tiles/Tile5 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile5 1" right="Assets/Prefabs/Tiles/Tile5 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile5 0" right="Assets/Prefabs/Tiles/Tile3 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 0" right="Assets/Prefabs/Tiles/Tile1 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 1" right="Assets/Prefabs/Tiles/Tile5 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile1 0" right="Assets/Prefabs/Tiles/Tile1 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile1 1" right="Assets/Prefabs/Tiles/Tile5 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile1 0" right="Assets/Prefabs/Tiles/Tile5 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile1 1" right="Assets/Prefabs/Tiles/Tile1 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile5 1" right="Assets/Prefabs/Tiles/Tile3 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile4 0" right="Assets/Prefabs/Tiles/Tile5 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile5 0" right="Assets/Prefabs/Tiles/Tile1 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile1 0" right="Assets/Prefabs/Tiles/Tile3 0"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile1 1" right="Assets/Prefabs/Tiles/Tile3 1"/>
+  <neighbor left="Assets/Prefabs/Tiles/Tile3 0" right="Assets/Prefabs/Tiles/Tile5 0"/>
+	</neighbors>
+</set>
