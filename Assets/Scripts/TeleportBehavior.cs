@@ -6,8 +6,7 @@ using Cinemachine;
 public class TeleportBehavior : MonoBehaviour
 {
     public Transform toTeleport;
-    public CinemachineConfiner confiner;
-    public Collider2D setCollider;
+    public int startingScore;
 
     private GameManager gm;
 
@@ -21,8 +20,10 @@ public class TeleportBehavior : MonoBehaviour
         if (collision.gameObject.tag == "Player")
         {
             collision.gameObject.transform.position = toTeleport.position;
-            confiner.m_BoundingShape2D = setCollider;
-            GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerItemsBehavior>().AddItem();
+            if (collision.gameObject.GetComponent<PlayerItemsBehavior>().items > startingScore)
+            {
+                Destroy(toTeleport.gameObject);
+            }
             gm.ClearGridPuzzle();
         }
     }

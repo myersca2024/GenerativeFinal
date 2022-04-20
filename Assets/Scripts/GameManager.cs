@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public GameObject playerReference;
     public GameObject gameWinMessage;
     public BoulderBehavior boulderObject;
+    public BoulderBehavior immovableBoulderObject;
+    public TreasureBehavior treasureObject;
     public int totalMissions;
     public int maxIterations;
 
@@ -22,8 +24,9 @@ public class GameManager : MonoBehaviour
     private bool mapGenerated = false;
     private bool missionsGenerated = false;
 
-    private bool[,] boulderGrid = new bool[8, 8];
+    private int[,] boulderGrid = new int[9, 11];
     private List<BoulderBehavior> boulders = new List<BoulderBehavior>();
+    private TreasureBehavior treasureInstance;
 
     void Start()
     {
@@ -112,6 +115,7 @@ public class GameManager : MonoBehaviour
         }
         GameObject spawn = Instantiate(spawnLocation, positionToSpawn.position + offset, this.transform.localRotation);
         playerReference.transform.position = spawn.transform.position;
+        this.gameObject.GetComponent<TimerObject>().TimerOn();
     }
 
     void InstantiateCave(int xMin, int xMax, int yMin, int yMax)
@@ -129,7 +133,7 @@ public class GameManager : MonoBehaviour
             currIterations--;
         }
         if (currIterations <= 0) {
-            Debug.Log("Failed to generate cave in valid area within given iterations.");
+            Debug.Log("Failed to generate cave in valid area within " + maxIterations.ToString() + " iterations.");
             return;
         }
         Instantiate(missionLocation, positionToSpawn.position + offset, this.transform.localRotation);
@@ -137,22 +141,38 @@ public class GameManager : MonoBehaviour
 
     public void GameWon()
     {
+        this.gameObject.GetComponent<TimerObject>().TimerOff();
         gameWinMessage.SetActive(true);
     }
 
-    public void GenerateGridPuzzle(bool[,] pattern)
+    public void GenerateGridPuzzle(int[,] pattern)
     {
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 9; i++)
         {
-            for (int j = 0; j < 8; j++)
+            for (int j = 0; j < 11; j++)
             {
-                if (pattern[i, j])
+                if (pattern[i, j] == 1)
                 {
                     BoulderBehavior boulder = Instantiate(boulderObject, GridSpaceToWorldPosition(i, j), this.transform.localRotation);
                     boulder.gridPos = new Vector2Int(i, j);
                     boulder.gm = this;
-                    boulderGrid[i, j] = true;
+                    boulderGrid[i, j] = 1;
                     boulders.Add(boulder);
+                }
+                else if (pattern[i, j] == 2)
+                {
+                    BoulderBehavior boulder = Instantiate(immovableBoulderObject, GridSpaceToWorldPosition(i, j), this.transform.localRotation);
+                    boulder.gridPos = new Vector2Int(i, j);
+                    boulder.gm = this;
+                    boulderGrid[i, j] = 2;
+                    boulders.Add(boulder);
+                }
+                else if (pattern[i, j] == 3)
+                {
+                    treasureInstance = Instantiate(treasureObject, GridSpaceToWorldPosition(i, j), this.transform.localRotation);
+                    treasureInstance.gridPos = new Vector2Int(i, j);
+                    treasureInstance.gm = this;
+                    boulderGrid[i, j] = 3;
                 }
             }
         }
@@ -163,7 +183,7 @@ public class GameManager : MonoBehaviour
         List<BoulderBehavior> toRemove = new List<BoulderBehavior>();
         foreach (BoulderBehavior boulder in boulders)
         {
-            boulderGrid[boulder.gridPos.x, boulder.gridPos.y] = false;
+            boulderGrid[boulder.gridPos.x, boulder.gridPos.y] = 0;
             toRemove.Add(boulder);
         }
 
@@ -172,6 +192,34 @@ public class GameManager : MonoBehaviour
             boulders.Remove(boulder);
             Destroy(boulder.gameObject, 0.1f);
         }
+
+        if (treasureInstance != null) { Destroy(treasureInstance.gameObject, 0.1f); }
+    }
+
+    public bool CheckRowColumnValidity(int x, int y, int[,] pattern)
+    {
+        int counter = 0;
+
+        // Check horizontal
+        for (int i = 0; i < 9; i++)
+        {
+            if (pattern[i, y] == 2) { counter++; }
+            else { counter = 0; }
+
+            if (counter == 3) { return false; }
+        }
+
+        // Check vertical
+        counter = 0;
+        for (int i = 0; i < 11; i++)
+        {
+            if (pattern[x, i] == 2) { counter++; }
+            else { counter = 0; }
+
+            if (counter == 3) { return false; }
+        }
+
+        return true;
     }
 
     public Vector3 AttemptMoveBoulder(Vector2Int fromPos, Vector2Int toPos, Vector3 boulderPos, out bool hasChanged)
@@ -180,15 +228,15 @@ public class GameManager : MonoBehaviour
         int fromY = fromPos.y;
         int toX = toPos.x;
         int toY = toPos.y;
-        if (toX < 0 || toX > 7 || toY < 0 || toY > 7)
+        if (!IsValidGridSpace(toX, toY))
         {
             hasChanged = false;
             return boulderPos;
         }
-        if (!boulderGrid[toX, toY])
+        if (boulderGrid[toX, toY] == 0)
         {
-            boulderGrid[fromX, fromY] = false;
-            boulderGrid[toX, toY] = true;
+            boulderGrid[fromX, fromY] = 0;
+            boulderGrid[toX, toY] = 1;
             hasChanged = true;
             return (boulderPos + new Vector3(toPos.x - fromPos.x, toPos.y - fromPos.y, 0));
         }
@@ -199,18 +247,70 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    /*
-    public Vector2Int WorldPositionToGridSpace(Vector3 position)
+    public void SetAdjacentBouldersActive(int x, int y, bool isActive)
     {
-
+        List<BoulderBehavior> bouldersToActivate = GetValidAdjacentBoulders(x, y);
+        foreach (BoulderBehavior boulder in bouldersToActivate)
+        {
+            boulder.isActive = isActive;
+        }
     }
-    */
+
+    private List<BoulderBehavior> GetValidAdjacentBoulders(int x, int y)
+    {
+        List<BoulderBehavior> boulders = new List<BoulderBehavior>();
+        // Horizontal
+        for (int i = x - 1; i <= x + 1; i+=2)
+        {
+            if (IsValidGridSpace(i, y) && boulderGrid[i, y] == 2)
+            {
+                boulders.Add(GetBoulderAtPosition(i, y));
+            }
+        }
+
+        // Vertical
+        for (int i = y - 1; i <= y + 1; i += 2)
+        {
+            if (IsValidGridSpace(x, i) && boulderGrid[x, i] == 2)
+            {
+                boulders.Add(GetBoulderAtPosition(x, i));
+            }
+        }
+
+        if (boulders.Count != 0) { boulders.Add(GetBoulderAtPosition(x, y)); }
+
+        return boulders;
+    }
+    
+    public BoulderBehavior GetBoulderAtPosition(int x, int y)
+    {
+        foreach (BoulderBehavior boulder in boulders)
+        {
+            if (boulder.gridPos.x == x && boulder.gridPos.y == y)
+            {
+                return boulder;
+            }
+        }
+
+        Debug.Log("Fatal error! Boulder with coordinates [" + x.ToString() + "," + y.ToString() + "] not found!");
+        return null;
+    }
 
     public Vector3 GridSpaceToWorldPosition(int x, int y)
     {
         Vector3 offset = new Vector3(0.5f, -0.5f, 0);
-        Vector3 bottomCorner = new Vector3(-10.608703f, 8.128969f, 0);
+        Vector3 bottomCorner = new Vector3(-7.78f, 12.14f, 0);
         return bottomCorner + new Vector3(x, y, 0) + offset;
+    }
+
+    public bool IsValidGridSpace(int x, int y)
+    {
+        return !(x < 0 || x > 8 || y < 0 || y > 10);
+    }
+
+    public void SetGridSpace(int x, int y, int val)
+    {
+        boulderGrid[x, y] = val;
     }
 
     void PrintGrid()
